@@ -1,0 +1,124 @@
+" __     ___                          _        ___ _ _                 
+" \ \   / (_)_ __ ___  _ __ ___    __| | ___  |_ _| (_) __ _  ___ ___  
+"  \ \ / /| | '_ ` _ \| '__/ __|  / _` |/ _ \  | || | |/ _` |/ __/ _ \ 
+"   \ V / | | | | | | | | | (__  | (_| |  __/  | || | | (_| | (_| (_) |
+"    \_/  |_|_| |_| |_|_|  \___|  \__,_|\___| |___|_|_|\__,_|\___\___/ 
+
+let mapleader = ","
+set nocompatible
+syntax on
+set mouse=a
+set clipboard=unnamedplus
+set number relativenumber
+set numberwidth=1
+set encoding=utf-8
+set showcmd
+set ruler
+set showmatch
+set laststatus=2
+set noshowmode
+
+set hidden
+
+" Trabajo con Tabuladores
+set shiftwidth=4
+set tabstop=4
+set expandtab
+set autoindent
+filetype indent on
+
+"Marcar espacios innecesarios para Python y C++
+"au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+highlight BadWhitespace ctermbg=red guibg=darkred
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.cpp,*.cu,*.h,*.hpp match BadWhitespace /\s\+$/
+
+" trabajo y configuración de splits
+set splitbelow
+set splitright
+" Navegación con splits
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"Configurar algunas teclas
+" Q se usa para ejecutar una orden del shell, escribimos el comando y luego Q
+" y se ejecuta.
+nnoremap Q !!$SHELL<Enter>
+" Verificación de ortografía en español y en Inglés
+nnoremap <leader><F6> :setlocal spell! spelllang=es<Enter>
+nnoremap <leader><F7> :setlocal spell! spelllang=en<Enter>
+nnoremap <leader><F8> :set nospell<Enter>
+
+" Permitimos colapsar o expandir las funciones o clases en vez de ver todo el
+" código fuente.
+set foldmethod=indent
+set foldlevel=99
+
+" Activamos la opción de colapsar con la barra espaciadora
+nnoremap <space> za
+
+" Configuración de identación para trabajo con archivos web y js
+au BufNewFile,BufRead *.js,*.html,*.css,*.xhtml,*.jsp
+    \ set tabstop=2 |
+    \ set softtabstop=2 |
+    \ set shiftwidth=2
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix
+
+"Autocompletado de tags de html con alias para cierre de tags
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+:ab <<< </<C-x><C-o>
+
+" Instalación de Plugins
+call plug#begin('~/.vim/plugged')
+    " Themes 
+    Plug 'morhetz/gruvbox'
+    Plug 'tomasiser/vim-code-dark'
+    " Plugin para configurar barra de estado
+    Plug 'vim-airline/vim-airline'        " Lo probaremos en otro momento.
+    Plug 'vim-airline/vim-airline-themes'
+    " Trabajar con el árbol de directorios
+    Plug 'preservim/nerdtree'
+    " Plugin para insertar llaves, corchetes etc en pares.
+    Plug 'jiangmiao/auto-pairs'
+    " ayuda a colapsar codigo fuente hay que probarlo
+    Plug 'tmhedberg/simpylfold'
+    " Autocompletar 
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    " Plugin para verificar sintaxis
+    Plug 'dense-analysis/ale'
+    " Plugin para resaltar la sintaxys.
+    Plug 'sheerun/vim-polyglot'
+    " Plugin para sintaxis c++
+    Plug 'octol/vim-cpp-enhanced-highlight'   
+    " Plugin para mostrar una línea en identación
+    Plug 'yggdroot/indentline'
+
+    "Plugin para mostrar en colores los parentesis o corchetes
+    Plug 'frazrepo/vim-rainbow'
+
+call plug#end()
+
+
+autocmd FileType json syntax match Comment +\/\/.\+$+
+"colorscheme gruvbox
+"let g:gruvbox_contrast_dark='hard'
+"set bg=dark
+
+"python with virtualenv support
+py3 << EOF
+import os
+import sys
+if 'VIRTUAL_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
