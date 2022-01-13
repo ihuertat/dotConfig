@@ -77,6 +77,9 @@ au BufNewFile,BufRead *.py
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 :ab <<< </<C-x><C-o>
 
+" Deshabilitando polyglot para JS
+let g:polyglot_disabled = ['jsx']
+
 " Instalación de Plugins
 call plug#begin('~/.vim/plugged')
     " Themes 
@@ -102,11 +105,20 @@ call plug#begin('~/.vim/plugged')
     " Plugin para mostrar una línea en identación
     Plug 'yggdroot/indentline'
 
-    "Plugin para mostrar en colores los parentesis o corchetes
+    "Plugin para mostrar en colores los paréntesis o corchetes
     Plug 'frazrepo/vim-rainbow'
-
+    "Plugin para trabajo con HTML y CSS
+    Plug 'mattn/emmet-vim'
+    " Plugins para trabajo con JS
+    Plug 'HerringtonDarkholme/yats.vim'
+    " or Plug 'leafgarland/typescript-vim'
+    Plug 'maxmellon/vim-jsx-pretty'
+    " Plugin para comentar o paréntesis de forma rápida
+    Plug 'joom/vim-commentary'
+    
 call plug#end()
 
+let g:vim_jsx_pretty_colorful_config = 1 " default 0
 
 autocmd FileType json syntax match Comment +\/\/.\+$+
 "colorscheme gruvbox
